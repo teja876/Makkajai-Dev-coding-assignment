@@ -103,16 +103,12 @@ billDetails getFinalBill(vector<product> &products){
   double totalTax = 0;
   for(int i = 0; i < products.size(); i++){
     double cost = stod(products[i].cost), tax, tempTax = 0;
-    // totalCost += cost;
     if(!products[i].isExempted){
       tax = (cost * 0.1);
-      // cout << products[i].line << " " << tax << endl;
       tax = ceil(tax * 20) / 20;
-      // cout << products[i].line << " " << tax << endl;
       totalTax += tax;
       tempTax = tax;
     }
-    // totalTax += tax;
     if(products[i].isImported){
       tax = (cost * 0.05);
       tax = ceil(tax * 20) / 20;
