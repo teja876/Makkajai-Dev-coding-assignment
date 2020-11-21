@@ -42,7 +42,18 @@ string getCost(string inputLine){
     // while loop till we get 
     // strings to store in string word
     while (ss >> word) {}
+    
     return word;
+}
+
+string getLine(string inputLine, string cost){
+  string s = "at " + cost;
+    
+    string::size_type i = inputLine.find(s);
+
+    if (i != std::string::npos)
+      inputLine.erase(i, s.length());
+    return inputLine;
 }
 
 product preprocess(string inputLine){
@@ -59,6 +70,7 @@ product preprocess(string inputLine){
 
   item.isImported = isImportedItem(inputLine);
   item.cost = getCost(inputLine);
+  item.line = getLine(inputLine, item.cost);
   item.qty = inputLine[0];
 
   return item;
@@ -86,23 +98,30 @@ double round(double var)
     return (double)value / 100; 
 } 
 
-billDetails getFinalBill(vector<product> products){
+billDetails getFinalBill(vector<product> &products){
   double totalCost = 0;
   double totalTax = 0;
   for(int i = 0; i < products.size(); i++){
-    double cost = stod(products[i].cost), tax = 0;
-    totalCost += cost;
+    double cost = stod(products[i].cost), tax, tempTax = 0;
+    // totalCost += cost;
     if(!products[i].isExempted){
-      double tax = (cost * 0.1);
-      tax = floor(tax*20.0 +.5)/20.0;
+      tax = (cost * 0.1);
+      // cout << products[i].line << " " << tax << endl;
+      tax = ceil(tax * 20) / 20;
+      // cout << products[i].line << " " << tax << endl;
       totalTax += tax;
+      tempTax = tax;
     }
     // totalTax += tax;
     if(products[i].isImported){
-      double tax = (cost * 0.05);
-      tax = floor(tax*20.0 +.5)/20.0;
+      tax = (cost * 0.05);
+      tax = ceil(tax * 20) / 20;
       totalTax += tax;
+      tempTax += tax;
     }
+    tempTax += cost;
+    totalCost += tempTax;
+    if(tempTax > 0.0) products[i].line = products[i].line + ": " + to_string(tempTax).erase(5, 4);
   }
   totalTax = round(totalTax);
   billDetails finalBill = billDetails();
