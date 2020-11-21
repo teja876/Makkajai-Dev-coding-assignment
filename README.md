@@ -6,3 +6,4 @@ This code takes one bill at a time as an input. To stop taking input enter '0'. 
     1 bottle of perfume: 20.89
     1 packet of headache pills: 9.75
     1 imported box of chocolates: 11.85
+    0
